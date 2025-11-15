@@ -8,7 +8,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://13.203.31.80:5432/testdb
+    url: jdbc:postgresql://13.203.31.80:5432/VOS
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -21,9 +21,9 @@ spring:
 
 # AWS SNS Configuration
 aws:
-  region: us-east-1
+  region: ap-south-1
   sns:
-    topic-arn: arn:aws:sns:us-east-1:123456789012:vos-notifications
+    topic-arn: arn:aws:sns:ap-south-1:992914516109:evoke-hackathon-evogenfive-topic
 
 # Application Configuration
 app:
@@ -50,4 +50,7 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+
+ACCESS_KEY: AKIA6OLSRFCG3TW2WYFN
+SECRET_KEY: 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
 
