@@ -2,16 +2,16 @@ spring:
   application:
     name: vos-api
   
-  datasource:
-    url: jdbc:h2:mem:vosdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: 
+#  datasource:
+#    url: jdbc:h2:mem:vosdb
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
   
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+#  h2:
+#    console:
+#      enabled: false
+#      path: /h2-console
   
   jpa:
     hibernate:
@@ -30,9 +30,9 @@ spring:
 
 # AWS SNS Configuration
 aws:
-  region: us-east-1
+  region: ap-south-1
   sns:
-    topic-arn: arn:aws:sns:us-east-1:123456789012:vos-notifications
+    topic-arn: arn:aws:sns:ap-south-1:992914516109:evoke-hackathon-evogenfive-topic
 
 # Application Configuration
 app:

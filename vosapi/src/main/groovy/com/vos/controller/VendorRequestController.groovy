@@ -21,7 +21,7 @@ class VendorRequestController {
     }
     
     @PostMapping
-    @PreAuthorize("hasRole('PROCUREMENT')")
+//    @PreAuthorize("hasRole('PROCUREMENT')")
     ResponseEntity<ApiResponse<VendorResponseDto>> createVendorRequest(
             @Valid @RequestBody VendorRequestDto requestDto) {
         VendorResponseDto response = vendorRequestService.createVendorRequest(requestDto)

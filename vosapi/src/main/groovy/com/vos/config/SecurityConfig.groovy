@@ -28,8 +28,8 @@ class SecurityConfig {
                 auth
                     // Public endpoints for vendor onboarding
                     .requestMatchers("/api/v1/vendor-sessions/**").permitAll()
-                    .requestMatchers("/api/v1/vendors/**/onboarding").permitAll()
-                    .requestMatchers("/api/v1/vendors/**/files").permitAll()
+                        .requestMatchers("/api/v1/vendors/{vendorId}/onboarding").permitAll()
+                        .requestMatchers("/api/v1/vendors/{vendorId}/files").permitAll()
                     // Procurement endpoints require authentication
                     .requestMatchers("/api/v1/vendor-requests/**").hasRole("PROCUREMENT")
                     .requestMatchers("/api/v1/vendors/**").hasRole("PROCUREMENT")
