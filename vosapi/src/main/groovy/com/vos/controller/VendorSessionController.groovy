@@ -24,14 +24,18 @@ class VendorSessionController {
         VendorSessionDto session = vendorSessionService.getSessionByToken(token)
         ResponseEntity.ok(ApiResponse.success(session))
     }
-    
+
     @PostMapping("/{token}/otp/send")
-    ResponseEntity<ApiResponse<Void>> sendOtp(@PathVariable String token,
-                                               @RequestBody(required = false) OtpRequestDto request) {
+    ResponseEntity<ApiResponse<Void>> sendOtp(@PathVariable("token") String token) {
+
         vendorSessionService.sendOtp(token)
-        ResponseEntity.ok(ApiResponse.success("OTP sent successfully", null))
+
+        return ResponseEntity.ok(
+                ApiResponse.success("OTP sent successfully", null)
+        )
     }
-    
+
+
     @PostMapping("/{token}/otp/verify")
     ResponseEntity<ApiResponse<VendorSessionDto>> verifyOtp(
             @PathVariable String token,
