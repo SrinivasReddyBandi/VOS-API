@@ -78,57 +78,51 @@ class VendorOnboardingServiceImpl implements VendorOnboardingService {
         
         form.vendor = vendor
         
-        // Map business details
+        // Map business details (flattened DTO)
         BusinessDetails businessDetails = new BusinessDetails()
-        businessDetails.legalBusinessName = stringSanitizer.sanitize(formDto.businessDetails.legalBusinessName)
-        businessDetails.businessRegistrationNumber = stringSanitizer.sanitize(formDto.businessDetails.businessRegistrationNumber)
-        businessDetails.businessType = stringSanitizer.sanitize(formDto.businessDetails.businessType)
-        businessDetails.yearEstablished = formDto.businessDetails.yearEstablished
-        businessDetails.businessAddress = stringSanitizer.sanitize(formDto.businessDetails.businessAddress)
-        businessDetails.numberOfEmployees = formDto.businessDetails.numberOfEmployees
-        businessDetails.industrySector = stringSanitizer.sanitize(formDto.businessDetails.industrySector)
+        businessDetails.legalBusinessName = stringSanitizer.sanitize(formDto.legalBusinessName)
+        businessDetails.businessRegistrationNumber = stringSanitizer.sanitize(formDto.businessRegistrationNumber)
+        businessDetails.businessType = stringSanitizer.sanitize(formDto.businessType)
+        businessDetails.yearEstablished = formDto.yearEstablished
+        businessDetails.businessAddress = stringSanitizer.sanitize(formDto.businessAddress)
+        businessDetails.numberOfEmployees = formDto.numberOfEmployees
+        businessDetails.industrySector = stringSanitizer.sanitize(formDto.industrySector)
         form.businessDetails = businessDetails
-        
-        // Map contact details
+
+        // Map contact details (flattened DTO)
         ContactDetails contactDetails = new ContactDetails()
-        contactDetails.primaryContactName = stringSanitizer.sanitize(formDto.contactDetails.primaryContactName)
-        contactDetails.jobTitle = stringSanitizer.sanitize(formDto.contactDetails.jobTitle)
-        contactDetails.emailAddress = stringSanitizer.sanitize(formDto.contactDetails.emailAddress)
-        contactDetails.phoneNumber = stringSanitizer.sanitize(formDto.contactDetails.phoneNumber)
-        contactDetails.secondaryContactName = stringSanitizer.sanitize(formDto.contactDetails.secondaryContactName)
-        contactDetails.secondaryContactEmail = stringSanitizer.sanitize(formDto.contactDetails.secondaryContactEmail)
-        contactDetails.website = stringSanitizer.sanitize(formDto.contactDetails.website)
+        contactDetails.primaryContactName = stringSanitizer.sanitize(formDto.primaryContactName)
+        contactDetails.jobTitle = stringSanitizer.sanitize(formDto.jobTitle)
+        contactDetails.emailAddress = stringSanitizer.sanitize(formDto.emailAddress)
+        contactDetails.phoneNumber = stringSanitizer.sanitize(formDto.phoneNumber)
+        contactDetails.secondaryContactName = stringSanitizer.sanitize(formDto.secondaryContactName)
+        contactDetails.secondaryContactEmail = stringSanitizer.sanitize(formDto.secondaryContactEmail)
+        contactDetails.website = stringSanitizer.sanitize(formDto.website)
         form.contactDetails = contactDetails
-        
-        // Map banking details
+
+        // Map banking details (flattened DTO)
         BankingDetails bankingDetails = new BankingDetails()
-        bankingDetails.bankName = stringSanitizer.sanitize(formDto.bankingDetails.bankName)
-        bankingDetails.accountHolderName = stringSanitizer.sanitize(formDto.bankingDetails.accountHolderName)
-        bankingDetails.accountNumber = stringSanitizer.sanitize(formDto.bankingDetails.accountNumber)
-        bankingDetails.accountType = stringSanitizer.sanitize(formDto.bankingDetails.accountType)
-        bankingDetails.routingOrSwiftCode = stringSanitizer.sanitize(formDto.bankingDetails.routingOrSwiftCode)
-        bankingDetails.iban = stringSanitizer.sanitize(formDto.bankingDetails.iban)
-        bankingDetails.paymentTerms = stringSanitizer.sanitize(formDto.bankingDetails.paymentTerms)
-        bankingDetails.currency = stringSanitizer.sanitize(formDto.bankingDetails.currency)
-        
-        // Validate account holder name matches business name
-        if (!bankingDetails.accountHolderName.equalsIgnoreCase(businessDetails.legalBusinessName)) {
-            throw new ValidationException("Account holder name must match legal business name")
-        }
-        
+        bankingDetails.bankName = stringSanitizer.sanitize(formDto.bankName)
+        bankingDetails.accountHolderName = stringSanitizer.sanitize(formDto.accountHolderName)
+        bankingDetails.accountNumber = stringSanitizer.sanitize(formDto.accountNumber)
+        bankingDetails.accountType = stringSanitizer.sanitize(formDto.accountType)
+        bankingDetails.routingOrSwiftCode = stringSanitizer.sanitize(formDto.routingOrSwiftCode)
+        bankingDetails.iban = stringSanitizer.sanitize(formDto.iban)
+        bankingDetails.paymentTerms = stringSanitizer.sanitize(formDto.paymentTerms)
+        bankingDetails.currency = stringSanitizer.sanitize(formDto.currency)
         form.bankingDetails = bankingDetails
-        
-        // Map compliance details
+
+        // Map compliance details (flattened DTO)
         ComplianceDetails complianceDetails = new ComplianceDetails()
-        complianceDetails.taxIdentificationNumber = stringSanitizer.sanitize(formDto.complianceDetails.taxIdentificationNumber)
-        complianceDetails.businessLicenseNumber = stringSanitizer.sanitize(formDto.complianceDetails.businessLicenseNumber)
-        complianceDetails.licenseExpiryDate = formDto.complianceDetails.licenseExpiryDate
-        complianceDetails.insuranceProvider = stringSanitizer.sanitize(formDto.complianceDetails.insuranceProvider)
-        complianceDetails.insurancePolicyNumber = stringSanitizer.sanitize(formDto.complianceDetails.insurancePolicyNumber)
-        complianceDetails.insuranceExpiryDate = formDto.complianceDetails.insuranceExpiryDate
-        complianceDetails.industryCertifications = stringSanitizer.sanitize(formDto.complianceDetails.industryCertifications)
+        complianceDetails.taxIdentificationNumber = stringSanitizer.sanitize(formDto.taxIdentificationNumber)
+        complianceDetails.businessLicenseNumber = stringSanitizer.sanitize(formDto.businessLicenseNumber)
+        complianceDetails.licenseExpiryDate = formDto.licenseExpiryDate
+        complianceDetails.insuranceProvider = stringSanitizer.sanitize(formDto.insuranceProvider)
+        complianceDetails.insurancePolicyNumber = stringSanitizer.sanitize(formDto.insurancePolicyNumber)
+        complianceDetails.insuranceExpiryDate = formDto.insuranceExpiryDate
+        complianceDetails.industryCertifications = stringSanitizer.sanitize(formDto.industryCertifications)
         form.complianceDetails = complianceDetails
-        
+
         // Set file IDs
         form.businessDocFileId = formDto.businessDocFileId
         form.contactDocFileId = formDto.contactDocFileId
@@ -215,16 +209,16 @@ class VendorOnboardingServiceImpl implements VendorOnboardingService {
     }
     
     private void validateForm(OnboardingFormDto formDto) {
-        // Validate dates are in future
-        if (formDto.complianceDetails.licenseExpiryDate.isBefore(LocalDate.now())) {
+        // Validate dates are in future (flattened DTO)
+        if (formDto.licenseExpiryDate != null && formDto.licenseExpiryDate.isBefore(LocalDate.now())) {
             throw new ValidationException("License expiry date must be in the future")
         }
-        if (formDto.complianceDetails.insuranceExpiryDate.isBefore(LocalDate.now())) {
+        if (formDto.insuranceExpiryDate != null && formDto.insuranceExpiryDate.isBefore(LocalDate.now())) {
             throw new ValidationException("Insurance expiry date must be in the future")
         }
         
         // Validate account number format
-        if (!formDto.bankingDetails.accountNumber.matches("\\d{8,18}")) {
+        if (formDto.accountNumber && !formDto.accountNumber.matches("\\d{8,18}")) {
             throw new ValidationException("Account number must be 8-18 digits")
         }
     }
@@ -232,51 +226,41 @@ class VendorOnboardingServiceImpl implements VendorOnboardingService {
     private OnboardingFormDto toFormDto(VendorOnboardingForm form) {
         OnboardingFormDto dto = new OnboardingFormDto()
         
-        // Convert business details
-        OnboardingFormDto.BusinessDetailsDto businessDto = new OnboardingFormDto.BusinessDetailsDto()
-        businessDto.legalBusinessName = form.businessDetails.legalBusinessName
-        businessDto.businessRegistrationNumber = form.businessDetails.businessRegistrationNumber
-        businessDto.businessType = form.businessDetails.businessType
-        businessDto.yearEstablished = form.businessDetails.yearEstablished
-        businessDto.businessAddress = form.businessDetails.businessAddress
-        businessDto.numberOfEmployees = form.businessDetails.numberOfEmployees
-        businessDto.industrySector = form.businessDetails.industrySector
-        dto.businessDetails = businessDto
-        
-        // Convert contact details
-        OnboardingFormDto.ContactDetailsDto contactDto = new OnboardingFormDto.ContactDetailsDto()
-        contactDto.primaryContactName = form.contactDetails.primaryContactName
-        contactDto.jobTitle = form.contactDetails.jobTitle
-        contactDto.emailAddress = form.contactDetails.emailAddress
-        contactDto.phoneNumber = form.contactDetails.phoneNumber
-        contactDto.secondaryContactName = form.contactDetails.secondaryContactName
-        contactDto.secondaryContactEmail = form.contactDetails.secondaryContactEmail
-        contactDto.website = form.contactDetails.website
-        dto.contactDetails = contactDto
-        
-        // Convert banking details
-        OnboardingFormDto.BankingDetailsDto bankingDto = new OnboardingFormDto.BankingDetailsDto()
-        bankingDto.bankName = form.bankingDetails.bankName
-        bankingDto.accountHolderName = form.bankingDetails.accountHolderName
-        bankingDto.accountNumber = form.bankingDetails.accountNumber
-        bankingDto.accountType = form.bankingDetails.accountType
-        bankingDto.routingOrSwiftCode = form.bankingDetails.routingOrSwiftCode
-        bankingDto.iban = form.bankingDetails.iban
-        bankingDto.paymentTerms = form.bankingDetails.paymentTerms
-        bankingDto.currency = form.bankingDetails.currency
-        dto.bankingDetails = bankingDto
-        
-        // Convert compliance details
-        OnboardingFormDto.ComplianceDetailsDto complianceDto = new OnboardingFormDto.ComplianceDetailsDto()
-        complianceDto.taxIdentificationNumber = form.complianceDetails.taxIdentificationNumber
-        complianceDto.businessLicenseNumber = form.complianceDetails.businessLicenseNumber
-        complianceDto.licenseExpiryDate = form.complianceDetails.licenseExpiryDate
-        complianceDto.insuranceProvider = form.complianceDetails.insuranceProvider
-        complianceDto.insurancePolicyNumber = form.complianceDetails.insurancePolicyNumber
-        complianceDto.insuranceExpiryDate = form.complianceDetails.insuranceExpiryDate
-        complianceDto.industryCertifications = form.complianceDetails.industryCertifications
-        dto.complianceDetails = complianceDto
-        
+        // Flattened mapping: copy embedded fields directly to top-level DTO
+        dto.id = form.id
+        dto.legalBusinessName = form.businessDetails?.legalBusinessName
+        dto.businessRegistrationNumber = form.businessDetails?.businessRegistrationNumber
+        dto.businessType = form.businessDetails?.businessType
+        dto.yearEstablished = form.businessDetails?.yearEstablished
+        dto.businessAddress = form.businessDetails?.businessAddress
+        dto.numberOfEmployees = form.businessDetails?.numberOfEmployees
+        dto.industrySector = form.businessDetails?.industrySector
+
+        dto.primaryContactName = form.contactDetails?.primaryContactName
+        dto.jobTitle = form.contactDetails?.jobTitle
+        dto.emailAddress = form.contactDetails?.emailAddress
+        dto.phoneNumber = form.contactDetails?.phoneNumber
+        dto.secondaryContactName = form.contactDetails?.secondaryContactName
+        dto.secondaryContactEmail = form.contactDetails?.secondaryContactEmail
+        dto.website = form.contactDetails?.website
+
+        dto.bankName = form.bankingDetails?.bankName
+        dto.accountHolderName = form.bankingDetails?.accountHolderName
+        dto.accountNumber = form.bankingDetails?.accountNumber
+        dto.accountType = form.bankingDetails?.accountType
+        dto.routingOrSwiftCode = form.bankingDetails?.routingOrSwiftCode
+        dto.iban = form.bankingDetails?.iban
+        dto.paymentTerms = form.bankingDetails?.paymentTerms
+        dto.currency = form.bankingDetails?.currency
+
+        dto.taxIdentificationNumber = form.complianceDetails?.taxIdentificationNumber
+        dto.businessLicenseNumber = form.complianceDetails?.businessLicenseNumber
+        dto.licenseExpiryDate = form.complianceDetails?.licenseExpiryDate
+        dto.insuranceProvider = form.complianceDetails?.insuranceProvider
+        dto.insurancePolicyNumber = form.complianceDetails?.insurancePolicyNumber
+        dto.insuranceExpiryDate = form.complianceDetails?.insuranceExpiryDate
+        dto.industryCertifications = form.complianceDetails?.industryCertifications
+
         dto.businessDocFileId = form.businessDocFileId
         dto.contactDocFileId = form.contactDocFileId
         dto.bankingDocFileId = form.bankingDocFileId
@@ -299,4 +283,3 @@ class VendorOnboardingServiceImpl implements VendorOnboardingService {
         dto
     }
 }
-

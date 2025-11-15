@@ -3,6 +3,7 @@ package com.vos.controller
 import com.vos.model.dto.ApiResponse
 import com.vos.model.dto.VendorRequestDto
 import com.vos.model.dto.VendorResponseDto
+import com.vos.model.dto.OnboardingFormDto
 import com.vos.service.VendorRequestService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -34,5 +35,11 @@ class VendorRequestController {
         VendorResponseDto response = vendorRequestService.getVendorRequest(id)
         ResponseEntity.ok(ApiResponse.success(response))
     }
-}
 
+    @GetMapping("/onboarding-form/{id}")
+    @PreAuthorize("hasRole('PROCUREMENT')")
+    ResponseEntity<ApiResponse<OnboardingFormDto>> getOnboardingForm(@PathVariable('id') Long id) {
+        OnboardingFormDto onboardingForm = vendorRequestService.getOnboardingFormByVendorId(id)
+        ResponseEntity.ok(ApiResponse.success(onboardingForm))
+    }
+}
