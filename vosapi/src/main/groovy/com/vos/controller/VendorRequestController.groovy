@@ -30,7 +30,7 @@ class VendorRequestController {
     
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('PROCUREMENT')")
-    ResponseEntity<ApiResponse<VendorResponseDto>> getVendorRequest(@PathVariable Long id) {
+    ResponseEntity<ApiResponse<VendorResponseDto>> getVendorRequest(@PathVariable('id') Long id) {
         VendorResponseDto response = vendorRequestService.getVendorRequest(id)
         ResponseEntity.ok(ApiResponse.success(response))
     }
