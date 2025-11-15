@@ -1,0 +1,15 @@
+package com.vos.enums
+
+enum ActivityEventType {
+    INVITATION_SENT,
+    OTP_SENT,
+    OTP_VERIFIED,
+    FORM_SUBMITTED,
+    FORM_UPDATED,
+    FILE_UPLOADED,
+    FILE_VALIDATED,
+    FOLLOW_UP_TRIGGERED,
+    STATUS_CHANGED,
+    FOLLOW_UP_RESOLVED
+}
+
