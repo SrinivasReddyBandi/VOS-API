@@ -43,6 +43,7 @@ logging:
     com.vos: DEBUG
     org.springframework.security: DEBUG
     org.hibernate.SQL: DEBUG
+    org.springframework.web.servlet.resource: OFF
 
 # Server Configuration
 server:

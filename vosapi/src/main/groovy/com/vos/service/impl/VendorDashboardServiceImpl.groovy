@@ -6,10 +6,17 @@ import com.vos.exception.ResourceNotFoundException
 import com.vos.model.dto.*
 import com.vos.repository.*
 import com.vos.service.VendorDashboardService
+import com.vos.util.PdfValidator
+import org.springframework.core.io.FileSystemResource
+import org.springframework.core.io.Resource
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 @Service
 @Transactional(readOnly = true)
@@ -18,13 +25,22 @@ class VendorDashboardServiceImpl implements VendorDashboardService {
     private final VendorRepository vendorRepository
     private final FollowUpRepository followUpRepository
     private final ActivityLogRepository activityLogRepository
-    
+    private final VendorFileRepository fileRepository
+    private final PdfValidator pdfValidator
+
+    // file storage location (must match onboarding service)
+    private final Path fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize()
+
     VendorDashboardServiceImpl(VendorRepository vendorRepository,
                               FollowUpRepository followUpRepository,
-                              ActivityLogRepository activityLogRepository) {
+                              ActivityLogRepository activityLogRepository,
+                              VendorFileRepository fileRepository,
+                              PdfValidator pdfValidator) {
         this.vendorRepository = vendorRepository
         this.followUpRepository = followUpRepository
         this.activityLogRepository = activityLogRepository
+        this.fileRepository = fileRepository
+        this.pdfValidator = pdfValidator
     }
     
     @Override
@@ -94,7 +110,63 @@ class VendorDashboardServiceImpl implements VendorDashboardService {
         
         metrics
     }
-    
+
+    @Override
+    List<VendorFileDto> getVendorFiles(Long vendorId) {
+        vendorRepository.findById(vendorId).orElseThrow { new ResourceNotFoundException("Vendor", vendorId) }
+        fileRepository.findByVendorId(vendorId).collect { toFileDto(it) }
+    }
+
+    @Override
+    VendorFileDto getVendorFile(Long vendorId, Long fileId) {
+        vendorRepository.findById(vendorId).orElseThrow { new ResourceNotFoundException("Vendor", vendorId) }
+        VendorFile file = fileRepository.findById(fileId)
+            .orElseThrow { new ResourceNotFoundException("VendorFile", fileId) }
+        if (file.vendor.id != vendorId) {
+            throw new ResourceNotFoundException("VendorFile", fileId)
+        }
+        toFileDto(file)
+    }
+
+    @Override
+    Resource downloadFile(Long vendorId, Long fileId) {
+        VendorFile file = fileRepository.findById(fileId)
+            .orElseThrow { new ResourceNotFoundException("VendorFile", fileId) }
+        if (file.vendor.id != vendorId) {
+            throw new ResourceNotFoundException("VendorFile", fileId)
+        }
+
+        Path filePath = fileStorageLocation.resolve(file.storageKey).normalize()
+        if (!Files.exists(filePath)) {
+            throw new ResourceNotFoundException("File storage", file.storageKey)
+        }
+        new FileSystemResource(filePath.toFile())
+    }
+
+    @Override
+    VendorFileDto revalidateFile(Long vendorId, Long fileId) {
+        VendorFile file = fileRepository.findById(fileId)
+            .orElseThrow { new ResourceNotFoundException("VendorFile", fileId) }
+        if (file.vendor.id != vendorId) {
+            throw new ResourceNotFoundException("VendorFile", fileId)
+        }
+
+        Path filePath = fileStorageLocation.resolve(file.storageKey).normalize()
+        if (!Files.exists(filePath)) {
+            throw new ResourceNotFoundException("File storage", file.storageKey)
+        }
+
+        try (InputStream is = Files.newInputStream(filePath)) {
+            def result = pdfValidator.validatePdf(is, file.fileType, file.fileName)
+            file.validationStatus = result.validationStatus
+            file.validationMessage = result.validationMessage
+            fileRepository.save(file)
+            activityLogRepository.save(new ActivityLog(vendor: file.vendor, eventType: ActivityEventType.FILE_VALIDATED, description: "Re-validated file ${file.fileName} with status ${result.validationStatus}"))
+        }
+
+        toFileDto(file)
+    }
+
     private VendorResponseDto toResponseDto(Vendor vendor) {
         VendorResponseDto dto = new VendorResponseDto()
         dto.id = vendor.id
@@ -150,4 +222,3 @@ class VendorDashboardServiceImpl implements VendorDashboardService {
         dto
     }
 }
-
