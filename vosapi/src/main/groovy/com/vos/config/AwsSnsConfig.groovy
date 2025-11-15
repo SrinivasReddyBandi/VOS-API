@@ -14,10 +14,10 @@ class AwsSnsConfig {
     @Value('${aws.region}')
     private String region
 
-    @Value('${aws.access-key:AKIA6OLSRFCG3TW2WYFN}')
+    @Value('${ACCESS_KEY}')
     private String accessKey
 
-    @Value('${aws.secret-key:QPXzl6tjqX/xyU/whU/RNDFO7MqQ2mz74nuMmap6}')
+    @Value('${SECRET_KEY}')
     private String secretKey
 
     @Bean
