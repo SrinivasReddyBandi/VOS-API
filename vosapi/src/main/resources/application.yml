@@ -23,7 +23,7 @@ spring:
 aws:
   region: ap-south-1
   sns:
-    topic-arn: arn:aws:sns:us-east-1:123456789012:vos-notifications
+    topic-arn: arn:aws:sns:ap-south-1:992914516109:evoke-hackathon-evogenfive-topic
 
 # Application Configuration
 app:
