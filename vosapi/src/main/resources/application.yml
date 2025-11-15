@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: vos-api
+  
+  datasource:
+    url: jdbc:h2:mem:vosdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# AWS SNS Configuration
+aws:
+  region: us-east-1
+  sns:
+    topic-arn: arn:aws:sns:us-east-1:123456789012:vos-notifications
+
+# Application Configuration
+app:
+  base:
+    url: http://localhost:8080
+  invite:
+    token:
+      expiry:
+        hours: 168  # 7 days
+  otp:
+    expiry:
+      minutes: 10
+
+# Logging
+logging:
+  level:
+    com.vos: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+
+# Server Configuration
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
