@@ -2,12 +2,15 @@ package com.vos.service.impl
 
 import com.vos.activity.ActivityLogger
 import com.vos.domain.Vendor
+import com.vos.domain.VendorOnboardingForm
 import com.vos.enums.ActivityEventType
 import com.vos.enums.VendorStatus
 import com.vos.exception.ResourceNotFoundException
 import com.vos.exception.ValidationException
+import com.vos.model.dto.OnboardingFormDto
 import com.vos.model.dto.VendorRequestDto
 import com.vos.model.dto.VendorResponseDto
+import com.vos.repository.VendorOnboardingFormRepository
 import com.vos.repository.VendorRepository
 import com.vos.service.NotificationService
 import com.vos.service.VendorRequestService
@@ -31,7 +34,8 @@ class VendorRequestServiceImpl implements VendorRequestService {
     private final TokenGenerator tokenGenerator
     private final StringSanitizer stringSanitizer
     private final ActivityLogger activityLogger
-    
+    private final VendorOnboardingFormRepository vendorOnboardingFormRepository
+
     @Value('${app.invite.token.expiry.hours:168}')
     private int tokenExpiryHours
     
@@ -42,12 +46,14 @@ class VendorRequestServiceImpl implements VendorRequestService {
                             NotificationService notificationService,
                             TokenGenerator tokenGenerator,
                             StringSanitizer stringSanitizer,
-                            ActivityLogger activityLogger) {
+                            ActivityLogger activityLogger,
+                            VendorOnboardingFormRepository vendorOnboardingFormRepository) {
         this.vendorRepository = vendorRepository
         this.notificationService = notificationService
         this.tokenGenerator = tokenGenerator
         this.stringSanitizer = stringSanitizer
         this.activityLogger = activityLogger
+        this.vendorOnboardingFormRepository = vendorOnboardingFormRepository
     }
 
     @Override
@@ -131,6 +137,13 @@ Vendor Onboarding System
         toResponseDto(vendor)
     }
     
+    @Override
+    OnboardingFormDto getOnboardingFormByVendorId(Long vendorId) {
+        VendorOnboardingForm form = vendorOnboardingFormRepository.findByVendorId(vendorId)
+            .orElseThrow { new ResourceNotFoundException("VendorOnboardingForm", vendorId) }
+        return toOnboardingFormDto(form)
+    }
+
     private VendorResponseDto toResponseDto(Vendor vendor) {
         VendorResponseDto dto = new VendorResponseDto()
         dto.id = vendor.id
@@ -145,5 +158,43 @@ Vendor Onboarding System
         dto.updatedAt = vendor.updatedAt
         dto
     }
-}
 
+    private OnboardingFormDto toOnboardingFormDto(VendorOnboardingForm form) {
+        OnboardingFormDto dto = new OnboardingFormDto()
+        dto.id = form.id
+        dto.legalBusinessName = form.businessDetails?.legalBusinessName
+        dto.businessRegistrationNumber = form.businessDetails?.businessRegistrationNumber
+        dto.businessType = form.businessDetails?.businessType
+        dto.yearEstablished = form.businessDetails?.yearEstablished
+        dto.businessAddress = form.businessDetails?.businessAddress
+        dto.numberOfEmployees = form.businessDetails?.numberOfEmployees
+        dto.industrySector = form.businessDetails?.industrySector
+        dto.primaryContactName = form.contactDetails?.primaryContactName
+        dto.jobTitle = form.contactDetails?.jobTitle
+        dto.emailAddress = form.contactDetails?.emailAddress
+        dto.phoneNumber = form.contactDetails?.phoneNumber
+        dto.secondaryContactName = form.contactDetails?.secondaryContactName
+        dto.secondaryContactEmail = form.contactDetails?.secondaryContactEmail
+        dto.website = form.contactDetails?.website
+        dto.bankName = form.bankingDetails?.bankName
+        dto.accountHolderName = form.bankingDetails?.accountHolderName
+        dto.accountNumber = form.bankingDetails?.accountNumber
+        dto.accountType = form.bankingDetails?.accountType
+        dto.routingOrSwiftCode = form.bankingDetails?.routingOrSwiftCode
+        dto.iban = form.bankingDetails?.iban
+        dto.paymentTerms = form.bankingDetails?.paymentTerms
+        dto.currency = form.bankingDetails?.currency
+        dto.taxIdentificationNumber = form.complianceDetails?.taxIdentificationNumber
+        dto.businessLicenseNumber = form.complianceDetails?.businessLicenseNumber
+        dto.licenseExpiryDate = form.complianceDetails?.licenseExpiryDate
+        dto.insuranceProvider = form.complianceDetails?.insuranceProvider
+        dto.insurancePolicyNumber = form.complianceDetails?.insurancePolicyNumber
+        dto.insuranceExpiryDate = form.complianceDetails?.insuranceExpiryDate
+        dto.industryCertifications = form.complianceDetails?.industryCertifications
+        dto.businessDocFileId = form.businessDocFileId
+        dto.contactDocFileId = form.contactDocFileId
+        dto.bankingDocFileId = form.bankingDocFileId
+        dto.complianceDocFileId = form.complianceDocFileId
+        return dto
+    }
+}

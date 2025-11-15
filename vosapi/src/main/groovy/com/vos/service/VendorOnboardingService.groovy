@@ -9,4 +9,3 @@ interface VendorOnboardingService {
     OnboardingFormDto submitOnboardingForm(Long vendorId, OnboardingFormDto formDto)
     VendorFileDto uploadFile(Long vendorId, FileType fileType, MultipartFile file)
 }
-

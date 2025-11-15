@@ -74,9 +74,47 @@ class VendorDashboardServiceImpl implements VendorDashboardService {
         
         // Load onboarding form if exists
         if (vendor.onboardingForm) {
-            // Convert form to DTO (simplified - would need full mapping)
-            dto.onboardingForm = new OnboardingFormDto()
-            // Map form details...
+            // Convert form to DTO (flattened mapping)
+            OnboardingFormDto formDto = new OnboardingFormDto()
+            formDto.legalBusinessName = vendor.onboardingForm.businessDetails?.legalBusinessName
+            formDto.businessRegistrationNumber = vendor.onboardingForm.businessDetails?.businessRegistrationNumber
+            formDto.businessType = vendor.onboardingForm.businessDetails?.businessType
+            formDto.yearEstablished = vendor.onboardingForm.businessDetails?.yearEstablished
+            formDto.businessAddress = vendor.onboardingForm.businessDetails?.businessAddress
+            formDto.numberOfEmployees = vendor.onboardingForm.businessDetails?.numberOfEmployees
+            formDto.industrySector = vendor.onboardingForm.businessDetails?.industrySector
+
+            formDto.primaryContactName = vendor.onboardingForm.contactDetails?.primaryContactName
+            formDto.jobTitle = vendor.onboardingForm.contactDetails?.jobTitle
+            formDto.emailAddress = vendor.onboardingForm.contactDetails?.emailAddress
+            formDto.phoneNumber = vendor.onboardingForm.contactDetails?.phoneNumber
+            formDto.secondaryContactName = vendor.onboardingForm.contactDetails?.secondaryContactName
+            formDto.secondaryContactEmail = vendor.onboardingForm.contactDetails?.secondaryContactEmail
+            formDto.website = vendor.onboardingForm.contactDetails?.website
+
+            formDto.bankName = vendor.onboardingForm.bankingDetails?.bankName
+            formDto.accountHolderName = vendor.onboardingForm.bankingDetails?.accountHolderName
+            formDto.accountNumber = vendor.onboardingForm.bankingDetails?.accountNumber
+            formDto.accountType = vendor.onboardingForm.bankingDetails?.accountType
+            formDto.routingOrSwiftCode = vendor.onboardingForm.bankingDetails?.routingOrSwiftCode
+            formDto.iban = vendor.onboardingForm.bankingDetails?.iban
+            formDto.paymentTerms = vendor.onboardingForm.bankingDetails?.paymentTerms
+            formDto.currency = vendor.onboardingForm.bankingDetails?.currency
+
+            formDto.taxIdentificationNumber = vendor.onboardingForm.complianceDetails?.taxIdentificationNumber
+            formDto.businessLicenseNumber = vendor.onboardingForm.complianceDetails?.businessLicenseNumber
+            formDto.licenseExpiryDate = vendor.onboardingForm.complianceDetails?.licenseExpiryDate
+            formDto.insuranceProvider = vendor.onboardingForm.complianceDetails?.insuranceProvider
+            formDto.insurancePolicyNumber = vendor.onboardingForm.complianceDetails?.insurancePolicyNumber
+            formDto.insuranceExpiryDate = vendor.onboardingForm.complianceDetails?.insuranceExpiryDate
+            formDto.industryCertifications = vendor.onboardingForm.complianceDetails?.industryCertifications
+
+            formDto.businessDocFileId = vendor.onboardingForm.businessDocFileId
+            formDto.contactDocFileId = vendor.onboardingForm.contactDocFileId
+            formDto.bankingDocFileId = vendor.onboardingForm.bankingDocFileId
+            formDto.complianceDocFileId = vendor.onboardingForm.complianceDocFileId
+
+            dto.onboardingForm = formDto
         }
         
         // Load files
