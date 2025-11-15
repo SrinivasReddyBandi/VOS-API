@@ -1,18 +1,18 @@
 # Change Log — Captured User Prompts
 
 Generated for user: mkurmala  
-Generated at (UTC): 2025-11-15 13:12:32
+Generated at (UTC): 2025-11-15 14:21:45
 
-This file captures each prompt the user provided during the session, in chronological order. Use this as an audit of requests to reproduce, triage, or convert into issues/tasks.
+This file records each prompt the user issued during the session, in chronological order. Use it as an audit trail or to create tasks/issues from the requests.
 
 ---
 
 ## 1) "Hello"
-User: "Hello"
+User: Hello
 
 ---
 
-## 2) OTP design request (long)
+## 2) OTP design request
 User:
 "You are a senior full-stack architect specializing in OTP-based authentication using Spring Boot (Java 17) on the backend and Angular on the frontend.
 
@@ -49,7 +49,7 @@ from where , we get them in aws sns"
 ---
 
 ## 6) scp permission error (Windows -> remote)
-User:
+User provided error:
 "C:\Windows\System32\OpenSSH\scp.exe: dest open "/root/vosapi-0.0.1-SNAPSHOT.jar": Permission denied
 C:\Windows\System32\OpenSSH\scp.exe: failed to upload file vosapi-0.0.1-SNAPSHOT.jar to /root"
 
@@ -61,20 +61,13 @@ User: "am asking in windows"
 ---
 
 ## 8) Postgres connection timeout when running jar on EC2 (stack trace)
-User pasted stack trace and asked about error; original fragment:
-"java:483) ~[hibernate-core-6.6.22.Final.jar!/:6.6.22.Final]
-at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61) ~[hibernate-core-6.6.22.Final.jar!/:6.6.22.Final]
-... 41 common frames omitted
-Caused by: java.net.SocketTimeoutException: Connect timed out
-at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547) ~[na:na]
+User posted a stack trace and asked for help; key excerpt:
+"Caused by: java.net.SocketTimeoutException: Connect timed out
 ...
-at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.7.jar!/:42.7.7]
-...
+org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(...)
 SQL Error: 0, SQLState: 08001
 The connection attempt failed.
 Failed to initialize JPA EntityManagerFactory: ... Unable to open JDBC Connection for DDL execution [The connection attempt failed.]"
-
-(asking for diagnosis and remediation)
 
 ---
 
@@ -102,14 +95,25 @@ User: "what is multi stage"
 
 ---
 
-## 13) Session / environment metadata
-System-provided session info (not a user prompt, included here for context):
-- Current Date and Time (UTC): 2025-11-15 13:12:32
-- Current User's Login: mkurmala
+## 13) "Generate a change log file to capture all the prompts."
+User: "Generate a change log file to capture all the prompts."
 
 ---
 
-## 14) "Generate a change log file to capture all the prompts."
+## 14) Kill grep process from PowerShell
+User:
+"[ec2-user@ip-172-31-16-36 ~]$ ps -ef|grep java
+ec2-user 79507 78931 0 11:21 pts/9 00:00:00 grep --color=auto java
+a command to kill it from powershell"
+
+---
+
+## 15) "how to run springboot project using docker file in EC2 instance"
+User: "how to run springboot project using docker file in EC2 instance"
+
+---
+
+## 16) Current request (regenerate changelog)
 User: "Generate a change log file to capture all the prompts."
 
 ---
